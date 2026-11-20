@@ -1,39 +1,26 @@
 ## Unit 3 - Deploying the app to BTP Cloud Foundry Environment
 
 ### Pre-requisites 
-- BTP Trial Account
-- CF install => cf target
-- Create Postgres Instance => cf services
-- MBT install
-
-node --version
-npm --version
-cds --version
-cf --version
-mbt --version
-make --version
-
-```
-cf login -a https://api.cf.us10-001.hana.ondemand.com -u mithunkarthick3@gmail.com -p <PASSWORD>
-```
-
 
 
 ### Instruction
-1. cds add postgres --for production
-2. cds add mta
-3. change dev to trial in mta file
-4. cds build --production
+1. cds add xsuaa
+review changes
+
+2. add xs-security.json
+
+3. update approuter in xs-app.json
+
+4. validate
+npx cds compile srv --to edmx
+npx cds build --production
+
 5. mbt build -t .
 
-6. cd app\autostock
-npx ui5 build --all --clean-dest --dest dist
-7. cds add approuter
-Change xs-app.json file
+6. deploy 
+cf deploy .\autostock_1.0.0.mtar
 
-8. change mta file
-
-9. deploy cf deploy .\autostock_1.0.0.mtar
+7. Create and assign role collections
 
 ### Project Structure
 

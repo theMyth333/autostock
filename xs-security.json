@@ -1,0 +1,30 @@
+{
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.Viewer",
+      "description": "View inventory"
+    },
+    {
+      "name": "$XSAPPNAME.Admin",
+      "description": "Manage inventory"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "Viewer",
+      "description": "View inventory",
+      "scope-references": [
+        "$XSAPPNAME.Viewer"
+      ]
+    },
+    {
+      "name": "Admin",
+      "description": "Manage inventory",
+      "scope-references": [
+        "$XSAPPNAME.Admin"
+      ]
+    }
+  ]
+}
+ 

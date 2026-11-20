@@ -25,6 +25,7 @@ modules:
           srv-url: ${default-url}
     requires:
       - name: autostock-postgres
+      - name: autostock-auth
 
   - name: autostock-postgres-deployer
     type: nodejs
@@ -58,6 +59,7 @@ modules:
           name: srv-api # must be used in xs-app.json as well
           url: ~{srv-url}
           forwardAuthToken: true
+      - name: autostock-auth
     provides:
       - name: app-api
         properties:
@@ -70,3 +72,21 @@ resources:
     parameters:
       service: postgresql-db
       service-plan: trial
+      
+  - name: autostock-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: autostock-${org}-${space}
+        tenant-mode: dedicated
+        oauth2-configuration:
+          credential-types:
+            - "binding-secret"
+            - "x509"
+          redirect-uris:
+            - https://*~{app-api/app-uri}/**
+    requires:
+      - name: app-api
