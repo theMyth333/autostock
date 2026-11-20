@@ -109,3 +109,24 @@ Check Duplicate VIN
       }
     });
 ```
+
+
+### Project Structure
+
+car-inventory/
+│
+├── app/
+│
+├── db/
+│   ├── schema.cds
+│   └── data/
+│       └── autostock.inventory-Cars.csv
+│
+├── srv/
+│   ├── inventory-service.cds
+│   ├── inventory-service.js
+│
+├── db.sqlite
+│
+├── package.json
+└── README.md
