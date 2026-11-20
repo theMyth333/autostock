@@ -1,166 +1,34 @@
-## Unit 3 - Frontend - UI5 Fiori Elements App
+## Unit 3 - Deploying the app to BTP Cloud Foundry Environment
 
 ### Pre-requisites 
-- SAP Fiori Tools - Extension Pack for vs code
-- yeoman generator
+- BTP Trial Account
+- CF install => cf target
+- Create Postgres Instance => cf services
+- MBT install
 
-
-### Instructions
-
-#### Fiori Elements App
-1. Go to fior app generator
-2. Use local cap project => auto selects cap project and OData Service
-3. Main Entity Cars. Automatically no. Table Type Responsive
-4. Explore the app folder
-5. Npm run watch-autostock
-
-#### Annotations
-6. Add Title annotations
-```
-annotate InventoryService.Cars with {
-
-    vin @title: 'Vehicle Identification Number';
-
-    make @title: 'Manufacturer';
-
-    model @title: 'Car Model';
-
-    modelYear @title: 'Manufacturing Year';
-
-    color @title: 'Exterior Color';
-
-    price @title: 'Selling Price';
-
-    currency @title: 'Currency';
-
-    status @title: 'Inventory Status';
-
-};
-```
-
-7. Add List Page Annotations
-```
-annotate InventoryService.Cars with @UI.LineItem: [
-    {
-        $Type: 'UI.DataField',
-        Value: make,
-        Label: 'Manufacturer'
-    },
-    {
-        $Type: 'UI.DataField',
-        Value: model,
-        Label: 'Model'
-    },
-    {
-        $Type: 'UI.DataField',
-        Value: modelYear,
-        Label: 'Year'
-    },
-    {
-        $Type: 'UI.DataField',
-        Value: price,
-        Label: 'Price'
-    },
-    {
-        $Type: 'UI.DataField',
-        Value: status,
-        Label: 'Status'
-    }
-];
-```
+node --version
+npm --version
+cds --version
+cf --version
+mbt --version
+make --version
 
 ```
-annotate InventoryService.Cars with @UI.SelectionFields: [
-    make,
-    model,
-    modelYear,
-    status
-];
+cf login -a https://api.cf.us10-001.hana.ondemand.com -u mithunkarthick3@gmail.com -p <PASSWORD>
 ```
 
-CHeck cds compile srv --to edmx
 
-8. Add Object Page annotations
-```
-annotate InventoryService.Cars with @UI.Identification: [
-    {
-        $Type: 'UI.DataField',
-        Value: vin,
-        Label: 'VIN'
-    },
-    {
-        $Type: 'UI.DataField',
-        Value: make,
-        Label: 'Manufacturer'
-    },
-    {
-        $Type: 'UI.DataField',
-        Value: model,
-        Label: 'Model'
-    },
-    {
-        $Type: 'UI.DataField',
-        Value: price,
-        Label: 'Selling Price'
-    }
-];
-```
-```
 
-annotate InventoryService.Cars with @UI.HeaderInfo: {
-    TypeName: 'Car',
-    TypeNamePlural: 'Cars',
-    Title: {
-        $Type: 'UI.DataField',
-        Value: model
-    },
-    Description: {
-        $Type: 'UI.DataField',
-        Value: make
-    }
-};
+### Instruction
+1. cds add postgres --for production
+2. cds add mta
+3. change dev to trial in mta file
+4. cds build --production
+5. mbt build -t .
 
-annotate InventoryService.Cars with @UI.Facets: [
-    {
-        $Type: 'UI.ReferenceFacet',
-        ID: 'CarDetails',
-        Label: 'Car Details',
-        Target: '@UI.FieldGroup#CarDetails'
-    },
-    {
-        $Type: 'UI.ReferenceFacet',
-        ID: 'Pricing',
-        Label: 'Pricing and Inventory',
-        Target: '@UI.FieldGroup#Pricing'
-    }
-];
-
-annotate InventoryService.Cars with @UI.FieldGroup #CarDetails: {
-    Data: [
-        { Value: vin },
-        { Value: make },
-        { Value: model },
-        { Value: modelYear },
-        { Value: color }
-    ]
-};
-
-annotate InventoryService.Cars with @UI.FieldGroup #Pricing: {
-    Data: [
-        { Value: price },
-        { Value: currency },
-        { Value: status }
-    ]
-};
-```
-
-check live reload of fiori app in each change 
-
-9. Add draft capability 
-```
-annotate InventoryService.Cars with @odata.draft.enabled;
-```
-
+6. cd app\autostock
+npx ui5 build --all --clean-dest --dest dist
+7. cds add approuter
 ### Project Structure
 
 ### Concepts
