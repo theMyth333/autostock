@@ -1,3 +1,5 @@
+using { InventoryService } from './inventory-service';
+
 annotate InventoryService.Cars with @odata.draft.enabled;
 
 annotate InventoryService.Cars with {
