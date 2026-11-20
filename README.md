@@ -12,3 +12,19 @@
 2. cds add nodejs
 3. cds add sqlite
 4. npm i
+
+#### Project Structure
+
+~~~
+autostock/
+│
+├── app/
+│
+├── db/
+│
+├── srv/
+│
+├── package.json
+│
+└── README.md
+~~~
