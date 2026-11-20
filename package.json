@@ -25,7 +25,8 @@
   "cds": {
     "requires": {
       "[production]": {
-        "db": "postgres"
+        "db": "postgres",
+        "auth": "dummy"
       },
       "[development]": {
         "db": "sqlite"
