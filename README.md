@@ -5,9 +5,7 @@ An automobile inventory management application
 
 ### Unit 0 - Project Setup
 ### Unit 1 - Data Modelling
-### Unit 2 - API Service
-### Unit 3 - Adding Behaviour 
-### Unit 4 - Frontend Fior Elements App
-### Unit 5 - Annotations
-### Unit 6 - Authentication and Authorisation
-### Unit 7 - Deployment
+### Unit 2 - Service Definition
+### Unit 3 - Fior Elements App
+### Unit 4 - Authentication and Authorisation
+### Unit 5 - Deployment
