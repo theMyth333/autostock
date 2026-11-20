@@ -1,132 +1,168 @@
-## Unit 2 - Service Design 
+## Unit 3 - Frontend - UI5 Fiori Elements App
 
-### Pre-requisites
-1. Install Bruno/Postman
+### Pre-requisites 
+- SAP Fiori Tools - Extension Pack for vs code
+- yeoman generator
+
 
 ### Instructions
 
-## Creating OData V4 service
+#### Fiori Elements App
+1. Go to fior app generator
+2. Use local cap project => auto selects cap project and OData Service
+3. Main Entity Cars. Automatically no. Table Type Responsive
+4. Explore the app folder
+5. Npm run watch-autostock
 
-1. create srv/inventory-service.cds
+#### Annotations
+6. Add Title annotations
 ```
-using { autostock.inventory as db } from '../db/schema';
+annotate InventoryService.Cars with {
 
-service InventoryService {
+    vin @title: 'Vehicle Identification Number';
 
-    entity Cars as projection on db.Cars;
+    make @title: 'Manufacturer';
 
-}
-```
+    model @title: 'Car Model';
 
-Concepts
-- Importing database model
-- defining service 
-- creating projection
+    modelYear @title: 'Manufacturing Year';
 
-2. compile
-```
-cds compile srv --to edmx
-```
-3. npm start to see the web json preview
-4. use bruno to see get, post and patch, delete
-`http://localhost:4004/odata/v4/inventory/Cars`
+    color @title: 'Exterior Color';
 
-## Creating Behaviour 
+    price @title: 'Selling Price';
 
-1. Understand CAP Event Handlers before, on, after. CRUD is take care by CAP.
-2. create new file inventory-service.js with 
-```
-const cds = require("@sap/cds");
+    currency @title: 'Currency';
 
-module.exports = class InventoryService extends cds.ApplicationService {
-  init() {
-    const { Cars } = this.entities;
+    status @title: 'Inventory Status';
 
-    this.before("READ", "Cars", async (req) => {
-
-        console.log("Event:", req.event);
-        console.log("Request Data:", req.data);
-        console.log("Target:", req.target.name);
-
-    });
-
-    return super.init();
-  }
 };
 ```
 
-test the read by id and the console log
-
-3. Now add logic to CREATE event on before hook
-
-Validating VIN
+7. Add List Page Annotations
 ```
- const { vin, price } = req.data;
-
-    // Validate VIN
-    if (!vin) {
-        req.error(400, 'VIN is mandatory', 'vin');
+annotate InventoryService.Cars with @UI.LineItem: [
+    {
+        $Type: 'UI.DataField',
+        Value: make,
+        Label: 'Manufacturer'
+    },
+    {
+        $Type: 'UI.DataField',
+        Value: model,
+        Label: 'Model'
+    },
+    {
+        $Type: 'UI.DataField',
+        Value: modelYear,
+        Label: 'Year'
+    },
+    {
+        $Type: 'UI.DataField',
+        Value: price,
+        Label: 'Price'
+    },
+    {
+        $Type: 'UI.DataField',
+        Value: status,
+        Label: 'Status'
     }
+];
+```
 
-    // Validate VIN length
-    if (vin && vin.length !== 17) {
-        req.error(400, 'VIN must contain 17 characters', 'vin');
+```
+annotate InventoryService.Cars with @UI.SelectionFields: [
+    make,
+    model,
+    modelYear,
+    status
+];
+```
+
+CHeck cds compile srv --to edmx
+
+8. Add Object Page annotations
+```
+annotate InventoryService.Cars with @UI.Identification: [
+    {
+        $Type: 'UI.DataField',
+        Value: vin,
+        Label: 'VIN'
+    },
+    {
+        $Type: 'UI.DataField',
+        Value: make,
+        Label: 'Manufacturer'
+    },
+    {
+        $Type: 'UI.DataField',
+        Value: model,
+        Label: 'Model'
+    },
+    {
+        $Type: 'UI.DataField',
+        Value: price,
+        Label: 'Selling Price'
     }
+];
 ```
-Validate Selling Price
 ```
-    // Validate selling price
-    if (price === undefined || price === null || Number(price) <= 0) {
-        req.error(400, 'Selling price must be greater than zero', 'price');
+
+annotate InventoryService.Cars with @UI.HeaderInfo: {
+    TypeName: 'Car',
+    TypeNamePlural: 'Cars',
+    Title: {
+        $Type: 'UI.DataField',
+        Value: model
+    },
+    Description: {
+        $Type: 'UI.DataField',
+        Value: make
     }
-```
+};
 
-Check Duplicate VIN
-```
-    // Check duplicate VIN
-    if (vin) {
-
-        const existingCar = await cds.tx(req).run(
-            SELECT.one
-                .from(Cars)
-                .where({ vin: vin })
-        );
-
-        if (existingCar) {
-            req.error(400, 'A car with this VIN already exists', 'vin');
-        }
-
+annotate InventoryService.Cars with @UI.Facets: [
+    {
+        $Type: 'UI.ReferenceFacet',
+        ID: 'CarDetails',
+        Label: 'Car Details',
+        Target: '@UI.FieldGroup#CarDetails'
+    },
+    {
+        $Type: 'UI.ReferenceFacet',
+        ID: 'Pricing',
+        Label: 'Pricing and Inventory',
+        Target: '@UI.FieldGroup#Pricing'
     }
+];
+
+annotate InventoryService.Cars with @UI.FieldGroup #CarDetails: {
+    Data: [
+        { Value: vin },
+        { Value: make },
+        { Value: model },
+        { Value: modelYear },
+        { Value: color }
+    ]
+};
+
+annotate InventoryService.Cars with @UI.FieldGroup #Pricing: {
+    Data: [
+        { Value: price },
+        { Value: currency },
+        { Value: status }
+    ]
+};
 ```
 
-4. Add logic to update
-```
- this.before("UPDATE", "Cars", async (req) => {
-      const { vin, price } = req.data;
-      // Validate selling price
-      if (price === undefined || price === null || Number(price) <= 0) {
-        req.error(400, "Selling price must be greater than zero", "price");
-      }
-    });
-```
+check live reload of fiori app in each change 
 
+9. Add draft capability 
+```
+annotate InventoryService.Cars with @odata.draft.enabled;
+```
 
 ### Project Structure
 
-car-inventory/
-│
-├── app/
-│
-├── db/
-│   ├── schema.cds
-│   └── data/
-│       └── autostock.inventory-Cars.csv
-│
-├── srv/
-│   ├── inventory-service.cds
-│   ├── inventory-service.js
-│
-├── db.sqlite
-│
-├── package.json
-└── README.md
+### Concepts
+
+### Exercises
