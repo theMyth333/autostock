@@ -1,11 +1,14 @@
-# AutoStock
-An automobile inventory management application
+## Unit 0 - Project Setup
 
-## Branches
+### Pre-requisites
+- Visual Studio Code
+- Nodejs
+- SQLite
+- @sap/cds-dk
+- CDS language support vs code extention
 
-### Unit 0 - Project Setup
-### Unit 1 - Data Modelling
-### Unit 2 - Service Definition
-### Unit 3 - Fior Elements App
-### Unit 4 - Authentication and Authorisation
-### Unit 5 - Deployment
+
+1. cds init
+2. cds add nodejs
+3. cds add sqlite
+4. npm i
