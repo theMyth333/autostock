@@ -31,6 +31,10 @@ npx ui5 build --all --clean-dest --dest dist
 7. cds add approuter
 Change xs-app.json file
 
+8. change mta file
+
+9. deploy cf deploy .\autostock_1.0.0.mtar
+
 ### Project Structure
 
 ### Concepts
