@@ -28,3 +28,7 @@ autostock/
 │
 └── README.md
 ~~~
+
+
+Try
+npm start
