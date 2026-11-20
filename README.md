@@ -29,6 +29,8 @@ cf login -a https://api.cf.us10-001.hana.ondemand.com -u mithunkarthick3@gmail.c
 6. cd app\autostock
 npx ui5 build --all --clean-dest --dest dist
 7. cds add approuter
+Change xs-app.json file
+
 ### Project Structure
 
 ### Concepts

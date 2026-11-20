@@ -16,7 +16,7 @@
     "eslint": "^10"
   },
   "scripts": {
-    "build": "ui5 build --all --clean-dest --dest ../../approuter/resources",
+    "build": "ui5 build --all --clean-dest --dest ../../app/router/resources",
     "deploy-config": "npx -p @sap/ux-ui5-tooling fiori add deploy-config cf"
   }
 }
